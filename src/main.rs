@@ -1,8 +1,11 @@
-const API_URL: &'static str = "https://creativecommons.tankerkoenig.de/json/list.php";
-const RADIUS: usize = 4;
-const SORT: &'static str = "price";
-const TYPE: &'static str = "diesel";
+use std::error::Error;
 
-fn main() {
-    println!("Hello, world!");
+mod api;
+
+fn main() -> Result<(), Box<dyn Error>> {
+    // Load environment variables from .env file.
+    // Fails if .env file not found, not readable or invalid.
+    dotenvy::dotenv()?;
+
+    Ok(())
 }
