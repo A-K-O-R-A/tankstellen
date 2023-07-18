@@ -1,10 +1,8 @@
+use api::requests::{get_close_stations, get_station_prices};
 use std::error::Error;
 
-use api::requests::get_close_stations;
-
-use crate::api::requests::get_station_prices;
-
 mod api;
+mod db;
 
 fn main() -> Result<(), Box<dyn Error>> {
     // Load environment variables from .env file.
