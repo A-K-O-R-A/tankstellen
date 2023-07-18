@@ -1,9 +1,12 @@
 use sqlx::{Connection, MySqlConnection};
-use std::{env, error::Error};
+use std::env;
 
-pub async fn connect() -> Result<MySqlConnection, Box<dyn Error>> {
-    let db_url = env::var("DATABASE_URL")?;
-    let conn = MySqlConnection::connect(db_url.as_str()).await?;
+pub async fn get_connection() -> MySqlConnection {
+    let db_url = env::var("DATABASE_URL").expect("No DATABASE_URL in env");
+    let conn = MySqlConnection::connect(db_url.as_str()).await;
 
-    Ok(conn)
+    match conn {
+        Ok(conn) => conn,
+        Err(e) => panic!("Unable to connect to database: {e}"),
+    }
 }
