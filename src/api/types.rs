@@ -11,7 +11,7 @@ pub struct ListResponse {
     pub stations: Vec<Station>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Station {
     pub id: String,
     pub name: String,
@@ -33,11 +33,10 @@ pub struct Station {
 }
 
 #[derive(Serialize, Deserialize)]
-pub struct PriceResponse {
+pub struct PricesResponse {
     pub ok: bool,
     pub license: String,
     pub data: String,
-    pub status: String,
     pub prices: HashMap<String, StationPriceInfo>,
 }
 
@@ -50,4 +49,12 @@ pub enum StationPriceInfo {
     Closed {},
     #[serde(rename = "no prices")]
     NoPrices {},
+}
+
+#[derive(Debug)]
+pub struct StationPrice {
+    pub id: String,
+    pub e5: f32,
+    pub e10: f32,
+    pub diesel: f32,
 }
