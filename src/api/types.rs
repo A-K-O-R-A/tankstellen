@@ -3,47 +3,47 @@ use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize)]
-struct ListResponse {
-    ok: bool,
-    license: String,
-    data: String,
-    status: String,
-    stations: Vec<Station>,
+pub struct ListResponse {
+    pub ok: bool,
+    pub license: String,
+    pub data: String,
+    pub status: String,
+    pub stations: Vec<Station>,
 }
 
 #[derive(Serialize, Deserialize)]
-struct Station {
-    id: String,
-    name: String,
-    brand: String,
-    street: String,
-    place: String,
-    lat: f32,
-    lng: f32,
-    dist: f32,
-    diesel: f32,
-    e5: f32,
-    e10: f32,
+pub struct Station {
+    pub id: String,
+    pub name: String,
+    pub brand: String,
+    pub street: String,
+    pub place: String,
+    pub lat: f32,
+    pub lng: f32,
+    pub dist: f32,
+    pub diesel: f32,
+    pub e5: f32,
+    pub e10: f32,
     #[serde(rename = "isOpen")]
-    is_open: bool,
+    pub is_open: bool,
     #[serde(rename = "houseNumber")]
-    house_number: String,
+    pub house_number: String,
     #[serde(rename = "postCode")]
-    post_code: usize,
+    pub post_code: usize,
 }
 
 #[derive(Serialize, Deserialize)]
-struct PriceResponse {
-    ok: bool,
-    license: String,
-    data: String,
-    status: String,
-    prices: HashMap<String, StationPriceInfo>,
+pub struct PriceResponse {
+    pub ok: bool,
+    pub license: String,
+    pub data: String,
+    pub status: String,
+    pub prices: HashMap<String, StationPriceInfo>,
 }
 
 #[derive(Serialize, Deserialize)]
 #[serde(tag = "status")]
-enum StationPriceInfo {
+pub enum StationPriceInfo {
     #[serde(rename = "open")]
     Open { e5: f32, e10: f32, diesel: f32 },
     #[serde(rename = "closed")]

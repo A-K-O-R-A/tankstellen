@@ -6,20 +6,19 @@ const SORT: &'static str = "dist";
 const FUEL_TYPE: &'static str = "all";
 
 pub struct Config {
-    api_url: String,
-    radius: usize,
-    sort: String,
-    fuel_type: String,
-    lat: String,
-    lng: String,
-    apikey: String,
+    pub api_url: String,
+    pub radius: usize,
+    pub sort: String,
+    pub fuel_type: String,
+    pub lat: String,
+    pub lng: String,
+    pub apikey: String,
 }
 
 pub fn get_config() -> Result<Config, env::VarError> {
     let lat = env::var("LAT")?;
     let lng = env::var("LNG")?;
     let apikey = env::var("APIKEY")?;
-
 
     Ok(Config {
         api_url: API_URL.into(),
