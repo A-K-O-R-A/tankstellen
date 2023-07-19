@@ -24,7 +24,7 @@ pub async fn get_close_stations() -> Result<Vec<Station>, Box<dyn Error>> {
     Ok(resp.stations)
 }
 
-pub async fn get_station_prices(ids: &[&str]) -> Result<Vec<StationPrice>, Box<dyn Error>> {
+pub async fn get_station_prices(ids: &[String]) -> Result<Vec<StationPrice>, Box<dyn Error>> {
     let config = get_config()?;
 
     let ids_string = ids.join(",");

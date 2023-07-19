@@ -1,7 +1,7 @@
 use std::env;
 
 const API_URL: &'static str = "https://creativecommons.tankerkoenig.de";
-const RADIUS: usize = 4;
+const RADIUS: usize = 10;
 const SORT: &'static str = "dist";
 const FUEL_TYPE: &'static str = "all";
 

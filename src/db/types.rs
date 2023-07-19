@@ -1,9 +1,9 @@
 #[derive(sqlx::FromRow)]
 pub struct PriceEntry {
     pub id: String,
-    pub diesel: u64,
-    pub e10: u64,
-    pub e5: u64,
+    pub diesel: f32,
+    pub e10: f32,
+    pub e5: f32,
 }
 
 #[derive(sqlx::FromRow)]

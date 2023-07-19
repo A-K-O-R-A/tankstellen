@@ -1,7 +1,11 @@
 use api::requests::{get_close_stations, get_station_prices};
 use std::error::Error;
 
-use crate::db::connect::get_connection;
+use crate::db::{
+    connect::get_connection,
+    queries::{save_prices, save_station},
+    types::{PriceEntry, StationEntry},
+};
 
 mod api;
 mod db;
@@ -16,12 +20,37 @@ async fn main() -> Result<(), Box<dyn Error>> {
     sqlx::migrate!().run(&mut conn).await?;
 
     let stations = get_close_stations().await?;
-    // println!("{:#?}", stations);
+    let station_ids: Vec<String> = stations.iter().map(|s| s.id.clone()).collect();
 
-    let station_ids: Vec<&str> = stations.iter().map(|s| s.id.as_str()).collect();
+    for station in stations {
+        let entry = StationEntry {
+            id: station.id,
+            name: station.name,
+            brand: station.brand,
+            street: station.street,
+            place: station.place,
+            lat: station.lat,
+            lng: station.lng,
+            dist: station.dist,
+            house_number: station.house_number,
+            post_code: station.post_code as i32,
+        };
+        save_station(entry).await?
+    }
 
-    let prices = get_station_prices(&station_ids).await?;
-    println!("{:#?}", prices);
+    let close_ids = &station_ids[..10];
+
+    let price_list = get_station_prices(close_ids).await?;
+    let price_entries: Vec<PriceEntry> = price_list
+        .iter()
+        .map(|p| PriceEntry {
+            id: p.id.clone(),
+            diesel: p.diesel,
+            e10: p.e10,
+            e5: p.e5,
+        })
+        .collect();
+    save_prices(&price_entries).await?;
 
     Ok(())
 }
