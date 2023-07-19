@@ -42,7 +42,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
     let forever = task::spawn(async move {
         // Run every 30 minutes
-        let mut interval = time::interval(Duration::from_secs(60 * 30));
+        let mut interval = time::interval(Duration::from_secs(60 * 10));
 
         loop {
             interval.tick().await;
