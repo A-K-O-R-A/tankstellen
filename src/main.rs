@@ -1,11 +1,12 @@
 use api::requests::{get_close_stations, get_station_prices};
-use std::error::Error;
+use std::{error::Error, time::Duration};
 
 use crate::db::{
     connect::get_connection,
     queries::{save_prices, save_station},
     types::{PriceEntry, StationEntry},
 };
+use tokio::{task, time};
 
 mod api;
 mod db;
@@ -38,8 +39,25 @@ async fn main() -> Result<(), Box<dyn Error>> {
         save_station(entry).await?
     }
 
-    let close_ids = &station_ids[..10];
+    let forever = task::spawn(async move {
+        // Run every 30 minutes
+        let mut interval = time::interval(Duration::from_secs(60 * 30));
 
+        loop {
+            interval.tick().await;
+            match do_price_update(&station_ids).await {
+                Ok(_) => println!("Saved values"),
+                Err(e) => println!("Error in loop: {e}"),
+            }
+        }
+    });
+
+    forever.await?;
+
+    Ok(())
+}
+
+async fn do_price_update(close_ids: &[String]) -> Result<(), Box<dyn Error>> {
     let price_list = get_station_prices(close_ids).await?;
     let price_entries: Vec<PriceEntry> = price_list
         .iter()
