@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS `prices` (
     `diesel` FLOAT NOT NULL ,
     `e10` FLOAT NOT NULL ,
     `e5` FLOAT NOT NULL ,
-    `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE `indentifier` (`id`)
+    `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 ); 
+
+ALTER TABLE `prices` ADD INDEX ( `timestamp` );

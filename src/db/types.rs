@@ -17,5 +17,5 @@ pub struct StationEntry {
     pub lng: f32,
     pub dist: f32,
     pub house_number: String,
-    pub post_code: usize,
+    pub post_code: i32,
 }
