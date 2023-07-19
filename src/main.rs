@@ -41,7 +41,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let station_ids: Vec<String> = queries::get_station_ids().await?;
 
     let forever = task::spawn(async move {
-        // Run every 30 minutes
+        // Run every 10 minutes
         let mut interval = time::interval(Duration::from_secs(60 * 10));
 
         loop {
