@@ -1,3 +1,5 @@
+use sqlx::{mysql::MySqlRow, Row};
+
 use super::{
     connect::get_connection,
     types::{PriceEntry, StationEntry},
@@ -92,4 +94,17 @@ pub async fn save_prices(price_list: &[PriceEntry]) -> Result<(), sqlx::Error> {
     }
 
     Ok(())
+}
+
+pub async fn get_station_ids() -> Result<Vec<String>, sqlx::Error> {
+    sqlx::query(
+        "
+        SELECT `id` FROM `stations`
+        ORDER BY `dist` ASC
+        LIMIT 10;
+        ",
+    )
+    .map(|r: MySqlRow| r.get("id"))
+    .fetch_all(&mut get_connection().await)
+    .await
 }
