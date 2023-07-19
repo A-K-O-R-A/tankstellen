@@ -2,7 +2,7 @@ use super::config::get_config;
 use super::types::{ListResponse, PricesResponse, Station, StationPrice, StationPriceInfo};
 use std::error::Error;
 
-pub fn get_close_stations() -> Result<Vec<Station>, Box<dyn Error>> {
+pub async fn get_close_stations() -> Result<Vec<Station>, Box<dyn Error>> {
     let config = get_config()?;
     let request_url = format!(
         "{}/json/list.php?lat={}&lng={}&rad={}&sort={}&type={}&apikey={}",
@@ -15,8 +15,8 @@ pub fn get_close_stations() -> Result<Vec<Station>, Box<dyn Error>> {
         config.apikey
     );
 
-    let resp = reqwest::blocking::get(request_url)?;
-    let content = resp.text()?;
+    let resp = reqwest::get(request_url).await?;
+    let content = resp.text().await?;
 
     // Parse the string of data
     let resp: ListResponse = serde_json::from_str(&content)?;
@@ -24,7 +24,7 @@ pub fn get_close_stations() -> Result<Vec<Station>, Box<dyn Error>> {
     Ok(resp.stations)
 }
 
-pub fn get_station_prices(ids: &[&str]) -> Result<Vec<StationPrice>, Box<dyn Error>> {
+pub async fn get_station_prices(ids: &[&str]) -> Result<Vec<StationPrice>, Box<dyn Error>> {
     let config = get_config()?;
 
     let ids_string = ids.join(",");
@@ -33,8 +33,8 @@ pub fn get_station_prices(ids: &[&str]) -> Result<Vec<StationPrice>, Box<dyn Err
         config.api_url, ids_string, config.apikey
     );
 
-    let resp = reqwest::blocking::get(request_url)?;
-    let content = resp.text()?;
+    let resp = reqwest::get(request_url).await?;
+    let content = resp.text().await?;
 
     // Parse the string of data
     let resp: PricesResponse = serde_json::from_str(&content)?;
